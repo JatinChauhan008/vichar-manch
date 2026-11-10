@@ -440,12 +440,12 @@ def clients_block(with_sector=True, p=""):
 <p>Awareness programmes and street plays on <b>Swachhta</b> (cleanliness), <b>Jal Sanrakshan</b> (water conservation) and other social causes, including projects associated with the <b>Delhi Government</b> and the <b>Government of India</b>.</p></div>"""
 
 
-def gallery_block(p, photos, filters=False):
+def gallery_block(p, photos, filters=False, captions=True):
     figs = []
     for i, (f, cap, sub, cat) in enumerate(photos):
         cls = "reveal wide" if (not filters and i == 0) else "reveal"
         figs.append(f'<figure class="{cls}" data-cat="{cat}"><img src="{p}assets/img/{f}" alt="Vichar Manch team – {E(cap)}" loading="lazy">'
-                    f'<figcaption>{E(cap)}<small>{E(sub)}</small></figcaption></figure>')
+                    + (f'<figcaption>{E(cap)}<small>{E(sub)}</small></figcaption>' if captions else '') + '</figure>')
     filt = ""
     if filters:
         opts = [("all", "All"), ("performance", "Live performances"), ("corporate", "Corporate & events"),
@@ -730,7 +730,7 @@ def build_gallery():
   {project_card(p)}
   <div style="height:64px"></div>
   {section_head("Photos", "Campaign gallery")}
-  {gallery_block(p, PHOTOS, filters=True)}
+  {gallery_block(p, PHOTOS, filters=True, captions=False)}
 </div></section>"""
     body += f"""<section class="section dark"><div class="wrap">
   {section_head("Videos", "Watch our performances")}
