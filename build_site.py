@@ -410,18 +410,32 @@ def client_logo(name):
     return None
 
 
-def client_tile(p, name, sector=None):
+def client_tile(p, name, sector=None, reveal=True, alt=True):
     logo = client_logo(name)
     sub = f"<small>{E(sector)}</small>" if sector else ""
+    rv = " reveal" if reveal else ""
     if logo:
-        return (f'<div class="client has-logo reveal"><img src="{p}{logo}" alt="{E(name)} logo" loading="lazy">'
+        alt_text = f"{E(name)} logo" if alt else ""
+        return (f'<div class="client has-logo{rv}"><img src="{p}{logo}" alt="{alt_text}" loading="lazy">'
                 f'<span class="client-name">{E(name)}</span>{sub}</div>')
-    return f'<div class="client reveal"><span class="client-name">{E(name)}</span>{sub}</div>'
+    return f'<div class="client{rv}"><span class="client-name">{E(name)}</span>{sub}</div>'
+
+
+def clients_marquee(p="", with_sector=True):
+    """All client logos in one row moving right-to-left in a seamless loop (#13).
+    The set is rendered twice; the track slides by exactly one set width, so the
+    second copy lands where the first started and the loop has no visible jump."""
+    one = "".join(client_tile(p, n, s if with_sector else None, reveal=False) for n, s in CLIENTS)
+    dup = "".join(client_tile(p, n, s if with_sector else None, reveal=False, alt=False) for n, s in CLIENTS)
+    # load marquee logos eagerly: lazy-loading can leave blanks as tiles slide in from the right
+    one, dup = one.replace(' loading="lazy"', ''), dup.replace(' loading="lazy"', '')
+    return (f'<div class="marquee reveal" role="region" aria-label="Our clients">'
+            f'<div class="marquee-track"><div class="marquee-set">{one}</div>'
+            f'<div class="marquee-set" aria-hidden="true">{dup}</div></div></div>')
 
 
 def clients_block(with_sector=True, p=""):
-    cells = "".join(client_tile(p, n, s if with_sector else None) for n, s in CLIENTS)
-    return f"""<div class="clients">{cells}</div>
+    return f"""{clients_marquee(p, with_sector)}
 <div class="gov-band reveal"><h3>Government projects</h3>
 <p>Awareness programmes and street plays on <b>Swachhta</b> (cleanliness), <b>Jal Sanrakshan</b> (water conservation) and other social causes, including projects associated with the <b>Delhi Government</b> and the <b>Government of India</b>.</p></div>"""
 

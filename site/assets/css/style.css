@@ -229,6 +229,26 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .client.has-logo:hover img { filter: none; }
 .client.has-logo .client-name { font-size: .98rem; }
 .client small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .85rem; color: var(--muted); }
+/* Client logo marquee (#13): two identical sets; the track moves left by exactly
+   one set (-50%), so the copy takes the original's place with no visible jump. */
+.marquee {
+  position: relative; overflow: hidden; padding: 8px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee-track { display: flex; width: max-content; animation: marquee-rtl 48s linear infinite; will-change: transform; }
+.marquee-set { display: flex; flex: none; }
+.marquee .client { flex: none; width: 210px; min-height: 150px; margin-right: 18px; }
+@keyframes marquee-rtl { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+@media (max-width: 620px) {
+  .marquee .client { width: 168px; min-height: 132px; margin-right: 12px; }
+  .marquee-track { animation-duration: 36s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee-track { animation: none; }
+  .marquee-set[aria-hidden="true"] { display: none; }
+}
 .gov-band {
   margin-top: 26px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
   background: var(--navy); color: #e8e6f0; border-radius: var(--radius); padding: 30px 34px;
