@@ -528,7 +528,7 @@ def build_home():
     <p class="statement">We don't just perform stories; we bring ideas to life, give voices to important issues, and use theatre as a medium to create meaningful change.</p>
     <a class="btn btn-maroon" href="{p}about.html">More about us</a>
   </div>
-  <div class="photo-stack reveal"><img src="{p}assets/img/team-dhol.jpg" alt="The Vichar Manch team ready to perform" loading="lazy">
+  <div class="photo-stack reveal"><img src="{p}assets/img/industrial-team-work.jpg" alt="Vichar Manch artists on a factory floor beside a safety and quality vision-statement banner" loading="lazy">
     <div class="badge"><b>150+</b>artists, Pan India</div></div>
 </div></section>"""
     body += f"""<section class="section alt"><div class="wrap">
