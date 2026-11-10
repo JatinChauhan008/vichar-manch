@@ -590,7 +590,7 @@ def build_about():
     body += f"""<section class="section dark"><div class="wrap split reverse">
   <div class="reveal">
     <span class="kicker">Why live theatre</span>
-    <h2>A poster is read in seconds. A play is remembered.</h2>
+    <h2>A play is remembered.</h2>
     <p>Most workplace communication is one-way: a circular, a slide deck, a banner at the gate. People see it, nod, and forget it.</p>
     <p>A nukkad natak is different. The audience stands in a circle, close to the actors. They laugh, they recognise their colleagues and themselves in the characters, and they see the consequence of a bad decision play out in front of them. That emotional connection is what changes behaviour.</p>
     <ul class="checks"><li>Reaches every level — from senior managers to contract workers</li><li>Works in any language and any literacy level</li><li>Starts conversations that continue after the show</li></ul>
