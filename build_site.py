@@ -24,7 +24,6 @@ PHONES = [  # (digits for links, display)
 ]
 WHATSAPP = "918169184646"  # number used by WhatsApp buttons & enquiry form
 YOUTUBE = "https://www.youtube.com/@Vicharmanchnukkadteam"
-GSTIN = "07NEQPS6179F1ZG"
 SITE_URL = "https://vicharmanchnukkadnatak.netlify.app"  # change if a custom domain is added
 
 STATS = [("150+", "Trained artists"), ("150+", "Cities across India"),
@@ -324,7 +323,7 @@ def page(filename, title, description, body, current=None, depth=0, og_image="bp
       <div><h4>Get in touch</h4><ul>{phones_footer}
         <li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Delhi · Mumbai · Pan India</li></ul></div>
     </div>
-    <div class="foot-bottom"><span>© <span id="year">2026</span> {FULL_NAME}</span><span>GSTIN: {GSTIN}</span></div>
+    <div class="foot-bottom"><span>© <span id="year">2026</span> {FULL_NAME}</span></div>
   </div>
 </footer>
 <a class="float-call" href="tel:+91{PHONES[0][0]}" aria-label="Call Vichar Manch">{icon("phone")}</a>
