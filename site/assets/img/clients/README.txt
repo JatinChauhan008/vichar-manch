@@ -13,4 +13,5 @@ Source files (Wikimedia Commons):
   hero.svg             Public domain    https://commons.wikimedia.org/wiki/File:Hero_MotoCorp.svg
   john-cockerill.svg   Public domain    https://commons.wikimedia.org/wiki/File:John_Cockerill_logo.svg
 
-Still needed (no reliable file found): nsdl, aditya-birla-group, seamex, hindustan-platinum
+Provided by the Vichar Manch team (GitHub issue #8):
+  hindustan-platinum.png, seamex.png, aditya-birla-group.png, nsdl.png
