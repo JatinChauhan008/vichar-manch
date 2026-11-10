@@ -21,7 +21,6 @@ EMAIL = "vicharmanch04@gmail.com"
 PHONES = [  # (digits for links, display)
     ("8169184646", "+91 81691 84646"),
     ("8796257902", "+91 87962 57902"),
-    ("9289935629", "+91 92899 35629"),
 ]
 WHATSAPP = "918169184646"  # number used by WhatsApp buttons & enquiry form
 YOUTUBE = "https://www.youtube.com/@Vicharmanchnukkadteam"
@@ -339,15 +338,21 @@ def page(filename, title, description, body, current=None, depth=0, og_image="bp
 # =============================================================== BLOCKS ====
 
 
-def hero(p, img, eyebrow, h1, lead, buttons, tags=None, crumbs=None, small=False):
+def hero(p, img, eyebrow, h1, lead, buttons, tags=None, crumbs=None, small=False, tagline=None, home=False):
+    """`lead` may be a string (one paragraph) or a list of paragraphs."""
     tag_html = f'<ul class="hero-tags">{"".join(f"<li>{E(t)}</li>" for t in tags)}</ul>' if tags else ""
     crumb_html = f'<div class="crumbs">{crumbs}</div>' if crumbs else ""
-    return f"""<section class="hero{' page-hero' if small else ''}">
+    paras = lead if isinstance(lead, list) else [lead]
+    lead_html = "".join(f'<p class="lead">{t}</p>' for t in paras)
+    tagline_html = f'<p class="hero-tagline">{E(tagline)}</p>' if tagline else ""
+    classes = "hero" + (" page-hero" if small else "") + (" home-hero" if home else "")
+    return f"""<section class="{classes}">
   <div class="hero-bg" style="background-image:url('{p}assets/img/{img}')" aria-hidden="true"></div>
   <div class="wrap">
     {crumb_html}<span class="eyebrow">{eyebrow}</span>
     <h1>{h1}</h1>
-    <p class="lead">{lead}</p>
+    {lead_html}
+    {tagline_html}
     {tag_html}
     <div class="btn-row">{buttons}</div>
   </div>
@@ -442,10 +447,13 @@ def cta_block(p, title="Planning a safety week or awareness campaign?", text="Te
 def build_home():
     p = ""
     body = hero(p, "bpcl-mumbai-refinery.jpg", "Nukkad Natak · Corporate Theatre · Pan India",
-                "Messages your people <em>watch, feel</em> and remember.",
-                "A poster is read in seconds and a presentation is forgotten by evening. Vichar Manch turns your safety rules, policies and campaigns into live street plays — performed right at your plant, office or community, in the language your audience speaks.",
+                "Vichar Manch – <em>Where Thoughts Find a Voice.</em>",
+                ["We are a leading provider of professionally curated Nukkad Natak and Street Play performances across India, creating meaningful experiences that inform, engage, and inspire audiences.",
+                 "We collaborate with corporates, NGOs, educational institutions, and government organizations to deliver powerful, customized performances that turn public spaces into platforms for awareness, dialogue, and positive social change.",
+                 "With creativity, powerful storytelling, and impactful performances at our core, we are committed to making every message count and every performance create an impact."],
                 contact_buttons(p) + f'<a class="btn btn-ghost" href="{p}gallery.html">{icon("play")}Watch our work</a>',
-                tags=["Workplace Safety", "Road Safety", "POSH", "CSR & Government", "Brand Promotions"])
+                tags=["Workplace Safety", "Road Safety", "POSH", "CSR & Government", "Brand Promotions"],
+                tagline="Bringing Stories to Streets. Creating Awareness. Inspiring Change.", home=True)
     body += stats_block()
     body += f"""<section class="section"><div class="wrap split">
   <div class="reveal">
@@ -710,7 +718,7 @@ def build_contact():
   {faq_block(FAQ)}
 </div></section>"""
     return page("contact.html", "Contact Us",
-                f"Contact Vichar Manch for nukkad natak and corporate awareness plays anywhere in India. Call {PHONES[0][1]}, {PHONES[1][1]} or {PHONES[2][1]}, or email {EMAIL}.",
+                f"Contact Vichar Manch for nukkad natak and corporate awareness plays anywhere in India. Call {' or '.join(v for _, v in PHONES)}, or email {EMAIL}.",
                 body, current="contact.html", og_image="aditya-birla-seamex.jpg")
 
 

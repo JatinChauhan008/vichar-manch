@@ -104,6 +104,12 @@ p { margin: 0 0 1em; }
 .hero h1 { color: #fff; max-width: 15ch; }
 .hero h1 em { font-style: normal; color: var(--gold); }
 .hero .lead { font-size: 1.22rem; max-width: 58ch; color: #f1e9f0; }
+.home-hero h1 { max-width: 16ch; font-size: clamp(2.4rem, 6vw, 4.4rem); margin-bottom: .45em; }
+.home-hero .lead { font-size: 1.12rem; max-width: 62ch; margin-bottom: .75em; }
+.hero-tagline {
+  margin: 22px 0 24px; padding-left: 16px; border-left: 4px solid var(--gold);
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.35rem); color: var(--gold); line-height: 1.35;
+}
 .eyebrow { display: inline-block; font-weight: 700; font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 0; list-style: none; }
 .hero-tags li { padding: 5px 14px; border: 1px solid rgba(244,167,59,.55); border-radius: 999px; font-size: .92rem; color: var(--gold-soft); }
@@ -379,6 +385,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   .field-row { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .hero .wrap { padding-top: 64px; padding-bottom: 64px; }
+  .home-hero .lead { font-size: 1rem; }
   .brand-name { font-size: 1.15rem; }
   .brand svg { width: 44px; height: 44px; }
   .photo-stack .badge { left: 12px; bottom: -18px; }
