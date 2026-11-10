@@ -26,7 +26,7 @@ PHONES = [  # (digits for links, display)
 WHATSAPP = "918169184646"  # number used by WhatsApp buttons & enquiry form
 YOUTUBE = "https://www.youtube.com/@Vicharmanchnukkadteam"
 GSTIN = "07NEQPS6179F1ZG"
-SITE_URL = ""  # e.g. "https://vicharmanch.in" once a domain is bought
+SITE_URL = "https://vichaarmanch.netlify.app"  # change if a custom domain is added
 
 STATS = [("150+", "Trained artists"), ("150+", "Cities across India"),
          ("20–30 min", "Per performance"), ("Multilingual", "Hindi, English & local languages")]
@@ -264,7 +264,8 @@ def nav_html(p, current):
 def page(filename, title, description, body, current=None, depth=0, og_image="bpcl-mumbai-refinery.jpg"):
     p = "../" * depth
     full_title = f"{title} | {NAME}" if title != NAME else f"{FULL_NAME} | Nukkad Natak & Corporate Theatre, Pan India"
-    canonical = f'<link rel="canonical" href="{SITE_URL}/{filename}">' if SITE_URL else ""
+    url_path = "" if filename == "index.html" else filename
+    canonical = f'<link rel="canonical" href="{SITE_URL}/{url_path}">' if SITE_URL else ""
     og_img = f"{SITE_URL}/assets/img/{og_image}" if SITE_URL else f"{p}assets/img/{og_image}"
     ld = {
         "@context": "https://schema.org", "@type": "PerformingGroup", "name": FULL_NAME,
@@ -733,7 +734,7 @@ def main():
     if SITE_URL:
         pages = ["index.html", "about.html", "services.html", "clients.html", "gallery.html", "contact.html"] + \
                 [f"services/{s['slug']}.html" for s in SERVICES]
-        urls = "".join(f"<url><loc>{SITE_URL}/{pg}</loc></url>" for pg in pages)
+        urls = "".join(f"<url><loc>{SITE_URL}/{'' if pg == 'index.html' else pg}</loc></url>" for pg in pages)
         write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
         write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
 

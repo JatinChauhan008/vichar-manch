@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vichaarmanch.netlify.app/sitemap.xml

@@ -1,0 +1,5 @@
+# Netlify serves the generated website in site/, not the repository root.
+# No build command: site/ is generated locally by `python build_site.py`
+# and committed. After editing build_site.py, re-run it and commit site/.
+[build]
+  publish = "site"
