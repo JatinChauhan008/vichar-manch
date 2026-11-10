@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Vichar Manch logo">
+  <circle cx="100" cy="100" r="98" fill="#2b2b2e"/>
+  <path d="M100 30c-30 0-54 22-54 50 0 14 6 27 16 36l-10 22 26-12c7 3 14 4 22 4 30 0 54-22 54-50S130 30 100 30z" transform="translate(-22 -2)" fill="#fbe6e3"/>
+  <path d="M100 37c-26 0-47 19-47 43 0 12 5 23 14 31l-6 15 17-8c7 3 14 5 22 5 26 0 47-19 47-43S126 37 100 37z" transform="translate(-22 -2)" fill="none" stroke="#2b2b2e" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <text x="78" y="88" text-anchor="middle" font-family="'Baloo 2','Mukta','Noto Sans Devanagari',sans-serif" font-weight="800" font-size="34" fill="#1d1d1f" transform="rotate(-14 78 80)">विचार</text>
+  <text x="128" y="160" text-anchor="middle" font-family="'Mukta','Helvetica Neue',Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="1" fill="#f2c4bb">MANCH</text>
+</svg>
