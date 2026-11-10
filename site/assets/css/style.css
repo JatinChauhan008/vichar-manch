@@ -222,8 +222,10 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .client { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .client:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--gold); }
 .client .client-name { display: block; }
-.client.has-logo { min-height: 150px; gap: 10px; align-content: center; }
-.client.has-logo img { height: 56px; width: auto; max-width: 80%; object-fit: contain; margin: 0 auto; filter: grayscale(.15); transition: filter .18s; }
+.clients { grid-auto-rows: 1fr; }
+.clients .client { min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.client.has-logo { gap: 8px; }
+.client.has-logo img { width: 150px; max-width: 85%; height: 60px; object-fit: contain; margin: 0 auto 4px; filter: grayscale(.15); transition: filter .18s; }
 .client.has-logo:hover img { filter: none; }
 .client.has-logo .client-name { font-size: .98rem; }
 .client small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .85rem; color: var(--muted); }
