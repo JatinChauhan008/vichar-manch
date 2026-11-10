@@ -25,7 +25,7 @@ PHONES = [  # (digits for links, display)
 WHATSAPP = "918169184646"  # number used by WhatsApp buttons & enquiry form
 YOUTUBE = "https://www.youtube.com/@Vicharmanchnukkadteam"
 GSTIN = "07NEQPS6179F1ZG"
-SITE_URL = "https://vicharmanch04.netlify.app"  # change if a custom domain is added
+SITE_URL = "https://vicharmanchnukkadnatak.netlify.app"  # change if a custom domain is added
 
 STATS = [("150+", "Trained artists"), ("150+", "Cities across India"),
          ("20–30 min", "Per performance"), ("Multilingual", "Hindi, English & local languages")]
@@ -191,7 +191,7 @@ SERVICES = [
 STEPS = [
     ("Understand", "We learn your objective, audience, site, language and any incident learnings or SOPs."),
     ("Develop the concept", "We propose a storyline and characters that match your message and workforce."),
-    ("Write the script", "A custom script — included in our rate, with no separate script charges."),
+    ("Write the script", "A custom script written around your message, site and audience."),
     ("Rehearse & coordinate", "Artists are cast, rehearsed and scheduled for your locations and shifts."),
     ("Perform", "Live on site, followed by audience interaction to reinforce the key points."),
 ]
@@ -200,9 +200,9 @@ FAQ = [
     ("How long is each play?", "Each performance runs about 20 to 30 minutes. We can make it shorter for shift change-overs or add interaction time for a longer session."),
     ("Do you need a stage, sound system or equipment?", "No. Nukkad natak is performed in the open with live voice and traditional instruments. A clear space at the gate, canteen, shop floor or an open yard is enough."),
     ("Which languages do you perform in?", "Hindi, English, or the local language of your site, so the audience connects immediately."),
-    ("Can the play be customised to our site?", "Yes. We build scripts around your own SOPs, site rules, incident learnings and terminology so every performance feels like it belongs to your workplace. The script is included in our rate."),
+    ("Can the play be customised to our site?", "Yes. We build scripts around your own SOPs, site rules, incident learnings and terminology so every performance feels like it belongs to your workplace."),
     ("Can you cover all our shifts or multiple locations?", "Yes. We can schedule several performances across shifts in a day, and with 150+ artists across 150+ cities we can run campaigns at multiple locations across India."),
-    ("How do we get a quotation?", "Call or WhatsApp us, or send the enquiry form with your location, dates, number of shows and topic. We will share our company profile and a quotation."),
+    ("How do we book a performance?", "Call or WhatsApp us, or send the enquiry form with your location, dates, number of shows and topic. We will share our company profile and suggest suitable plays."),
 ]
 
 # =============================================================== ICONS =====
@@ -303,7 +303,6 @@ def page(filename, title, description, body, current=None, depth=0, og_image="bp
     <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
     <ul class="menu" id="menu">
       {nav_html(p, current)}
-      <li class="nav-cta"><a class="btn btn-maroon" href="{p}contact.html">Get a Quote</a></li>
     </ul>
   </div>
 </header>
@@ -394,8 +393,35 @@ def format_block():
     return f'<div class="format reveal">{cells}</div>'
 
 
-def clients_block(with_sector=True):
-    cells = "".join(f'<div class="client reveal">{E(n)}{f"<small>{E(s)}</small>" if with_sector else ""}</div>' for n, s in CLIENTS)
+LOGO_DIR = os.path.join(OUT, "assets", "img", "clients")
+
+
+def client_slug(name):
+    import re
+    return re.sub(r"[^a-z0-9]+", "-", name.lower().replace("ä", "a")).strip("-")
+
+
+def client_logo(name):
+    """Return the logo's site path if an official logo file has been added, else None.
+    Drop files named e.g. aditya-birla-group.svg / hafele.png into site/assets/img/clients/."""
+    for ext in ("svg", "png", "webp", "jpg"):
+        f = f"{client_slug(name)}.{ext}"
+        if os.path.exists(os.path.join(LOGO_DIR, f)):
+            return f"assets/img/clients/{f}"
+    return None
+
+
+def client_tile(p, name, sector=None):
+    logo = client_logo(name)
+    sub = f"<small>{E(sector)}</small>" if sector else ""
+    if logo:
+        return (f'<div class="client has-logo reveal"><img src="{p}{logo}" alt="{E(name)} logo" loading="lazy">'
+                f'<span class="client-name">{E(name)}</span>{sub}</div>')
+    return f'<div class="client reveal"><span class="client-name">{E(name)}</span>{sub}</div>'
+
+
+def clients_block(with_sector=True, p=""):
+    cells = "".join(client_tile(p, n, s if with_sector else None) for n, s in CLIENTS)
     return f"""<div class="clients">{cells}</div>
 <div class="gov-band reveal"><h3>Government projects</h3>
 <p>Awareness programmes and street plays on <b>Swachhta</b> (cleanliness), <b>Jal Sanrakshan</b> (water conservation) and other social causes, including projects associated with the <b>Delhi Government</b> and the <b>Government of India</b>.</p></div>"""
@@ -414,6 +440,28 @@ def gallery_block(p, photos, filters=False):
         filt = '<div class="filters" role="group" aria-label="Filter photos">' + "".join(
             f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{v}</button>' for k, v in opts) + "</div>"
     return f'{filt}<div class="gallery">{"".join(figs)}</div><div class="lightbox" role="dialog" aria-label="Photo viewer"><button type="button" aria-label="Close">×</button><div><img alt=""><p></p></div></div>'
+
+
+FEATURED_PROJECT = {
+    "img": "industrial-team-work.jpg",
+    "title": "Industrial Safety & Workplace Awareness",
+    "category": "Corporate Events / Nukkad Natak",
+    "text": "An interactive workplace awareness initiative focused on promoting safety, quality, teamwork, and responsible workplace behaviour through engaging performances and activities.",
+    "alt": "Vichar Manch artists on a factory floor beside a safety and quality vision-statement banner",
+}
+
+
+def project_card(p):
+    f = FEATURED_PROJECT
+    return f"""<article class="project-card reveal" tabindex="0" role="button" aria-label="View photo: {E(f['title'])}">
+  <div class="project-img"><img src="{p}assets/img/{f['img']}" alt="{E(f['alt'])}" loading="lazy" width="1440" height="1080"></div>
+  <div class="project-body">
+    <span class="project-cat">{E(f['category'])}</span>
+    <h3>{E(f['title'])}</h3>
+    <p>{E(f['text'])}</p>
+    <span class="more">View photo</span>
+  </div>
+</article>"""
 
 
 def videos_block(ids):
@@ -435,9 +483,10 @@ def faq_block(items):
     return '<div class="faq">' + "".join(f'<details class="reveal"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in items) + "</div>"
 
 
-def cta_block(p, title="Planning a safety week or awareness campaign?", text="Tell us your dates, locations and topic. We’ll suggest the right plays and share a quotation."):
+def cta_block(p, title="Planning a safety week or awareness campaign?", text=""):
+    text_html = f"<p>{text}</p>" if text else ""
     return f"""<section class="cta"><div class="wrap">
-  <div><h2>{title}</h2><p>{text}</p></div>
+  <div><h2>{title}</h2>{text_html}</div>
   <div class="btn-row">{contact_buttons(p)}<a class="btn btn-ghost" href="{p}contact.html">Send an enquiry</a></div>
 </div></section>"""
 
@@ -446,7 +495,7 @@ def cta_block(p, title="Planning a safety week or awareness campaign?", text="Te
 
 def build_home():
     p = ""
-    body = hero(p, "bpcl-mumbai-refinery.jpg", "Nukkad Natak · Corporate Theatre · Pan India",
+    body = hero(p, "industrial-team-work.jpg", "Nukkad Natak · Corporate Theatre · Pan India",
                 "Vichar Manch – <em>Where Thoughts Find a Voice.</em>",
                 ["We are a leading provider of professionally curated Nukkad Natak and Street Play performances across India, creating meaningful experiences that inform, engage, and inspire audiences.",
                  "We collaborate with corporates, NGOs, educational institutions, and government organizations to deliver powerful, customized performances that turn public spaces into platforms for awareness, dialogue, and positive social change.",
@@ -457,11 +506,13 @@ def build_home():
     body += stats_block()
     body += f"""<section class="section"><div class="wrap split">
   <div class="reveal">
-    <span class="kicker">Who we are</span>
-    <h2>A Pan-India street theatre team for serious messages</h2>
-    <p>Vichar Manch is a nukkad natak team with its head office in Delhi and operations in Mumbai. Our network of <b>150+ trained artists across 150+ cities</b> — actors, writers and directors — creates performances built around each client’s exact requirement.</p>
-    <p>We work with corporates, plants and refineries, government departments and NGOs on workplace safety, POSH, social awareness, CSR and brand campaigns.</p>
-    <div class="quote">A live play is watched, felt and remembered.</div>
+    <span class="kicker">About Vichar Manch</span>
+    <h2>Who We Are</h2>
+    <p><b>Vichar Manch – Nukkad Natak Team</b> is a collective of passionate theatre artists united by one belief: theatre has the power to influence minds, spark conversations, and inspire change.</p>
+    <p>With over nine years of experience in street theatre, we use the power of storytelling and live performances to bring important social messages closer to people. Our work goes beyond the stage, addressing real-world issues through thought-provoking, engaging, and impactful performances.</p>
+    <p>From corporate awareness campaigns and educational programmes to social initiatives and community engagement, we create performances that inform, connect, and leave a lasting impression.</p>
+    <p>Rooted in Delhi and performing across India, Vichar Manch transforms everyday spaces into stages where voices are heard, ideas are shared, and meaningful conversations begin.</p>
+    <p class="statement">We don't just perform stories; we bring ideas to life, give voices to important issues, and use theatre as a medium to create meaningful change.</p>
     <a class="btn btn-maroon" href="{p}about.html">More about us</a>
   </div>
   <div class="photo-stack reveal"><img src="{p}assets/img/team-dhol.jpg" alt="The Vichar Manch team ready to perform" loading="lazy">
@@ -504,7 +555,7 @@ def build_about():
     strengths = [
         ("users", "150+ artists network", "A large pool of trained actors, writers and directors, so we can staff projects of any scale."),
         ("map", "150+ cities, Pan India", "Head office in Delhi, operations in Mumbai, and artists across the country for multi-location campaigns."),
-        ("script", "Custom scripts included", "Every script is written for your objective — and it is part of our rate, with no separate script charges."),
+        ("script", "Custom scripts", "Every script is written around your objective, your audience and your site."),
         ("lang", "Your audience’s language", "Hindi, English or the local language of the site, so the message lands instantly."),
         ("layers", "Multi-sector experience", "Plants, refineries, engineering sites, corporate offices, government and NGO campaigns."),
         ("clock", "Flexible execution", "Formats adapted to the audience, venue and schedule — including back-to-back shows across shifts."),
@@ -600,11 +651,11 @@ def build_service(s):
   <div class="grid grid-2">
     <div class="card reveal"><h3>What we cover</h3><ul class="checks">{topics}</ul></div>
     <div class="card reveal"><h3>Ideal for</h3><ul class="checks">{good}</ul>
-      <p>Every script is customised around your SOPs, site rules and local language — included in our rate.</p></div>
+      <p>Every script is customised around your SOPs, site rules and local language.</p></div>
   </div>
 </div></section>"""
     if s.get("clients"):
-        cl = "".join(f'<div class="client reveal">{E(c)}</div>' for c in s["clients"])
+        cl = "".join(client_tile(p, c) for c in s["clients"])
         body += f"""<section class="section"><div class="wrap">
   {section_head("Track record", "Teams we have performed this for")}
   <div class="clients">{cl}</div>
@@ -662,6 +713,9 @@ def build_gallery():
                 "A look at our team at client sites, corporate offices and public campaigns across India.",
                 contact_buttons(p), small=True)
     body += f"""<section class="section"><div class="wrap">
+  {section_head("Our work", "Featured project")}
+  {project_card(p)}
+  <div style="height:64px"></div>
   {section_head("Photos", "Campaign gallery")}
   {gallery_block(p, PHOTOS, filters=True)}
 </div></section>"""
@@ -681,7 +735,7 @@ def build_contact():
     phone_links = "".join(f'<a href="tel:+91{d}">{v}</a>' for d, v in PHONES)
     svc_opts = "".join(f"<option>{E(s['title'])}</option>" for s in SERVICES)
     body = hero(p, "aditya-birla-seamex.jpg", "Contact", "Let’s plan your next campaign",
-                "Share your dates, locations and topic. We’ll send our company profile, suggest suitable plays and share a quotation.",
+                "Share your dates, locations and topic. We’ll send our company profile and suggest suitable plays.",
                 contact_buttons(p), small=True)
     body += f"""<section class="section"><div class="wrap contact-grid">
   <div class="reveal">
