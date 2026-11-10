@@ -228,7 +228,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 }
 .gallery figcaption small { display: block; font-weight: 500; color: var(--gold-soft); font-size: .85rem; }
 .gallery .wide { grid-column: span 2; grid-row: span 2; }
-.gallery .wide img { aspect-ratio: auto; height: 100%; }
+.gallery .wide img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
 .site-footer .brand-sub { color: var(--gold); }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
 .filters button {
@@ -374,8 +374,8 @@ a.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   .format { grid-template-columns: 1fr; }
   .format div { border-right: 0; border-bottom: 1px solid #34344f; }
   .format div:last-child { border-bottom: 0; }
-  .gallery .wide { grid-column: auto; }
-  .gallery .wide img { aspect-ratio: 4/3; height: auto; }
+  .gallery .wide { grid-column: auto; grid-row: auto; }
+  .gallery .wide img { position: static; aspect-ratio: 4/3; height: auto; }
   .field-row { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .hero .wrap { padding-top: 64px; padding-bottom: 64px; }

@@ -48,12 +48,27 @@ VIDEOS = {
 }
 
 # (file, caption, sub-caption, filter categories)
+# The first 6 also appear on the home page (the first one large).
 PHOTOS = [
+    ("plant-hall-performance-3.jpg", "Live for the plant workforce", "Performance in the plant hall", "performance industrial"),
     ("bpcl-mumbai-refinery.jpg", "BPCL", "Mumbai Refinery", "industrial"),
+    ("asian-paints-stage.jpg", "Asian Paints", "On stage at a company event", "performance corporate"),
+    ("office-floor-performance-2.jpg", "Right on the office floor", "No stage needed", "performance corporate"),
+    ("hafele-warehouse.jpg", "Häfele", "With the warehouse team", "industrial"),
     ("hindustan-platinum.jpg", "Hindustan Platinum", "Corporate campaign", "corporate"),
+    ("plant-hall-performance-1.jpg", "Every shift, every worker", "Performance in the plant hall", "performance industrial"),
+    ("hafele-lean-corner.jpg", "Häfele", "Session at the Lean Corner", "performance corporate"),
+    ("stage-performance-1.jpg", "Big-stage performance", "Company event", "performance corporate"),
+    ("plant-hall-performance-2.jpg", "Song, rhythm and story", "Performance in the plant hall", "performance industrial"),
+    ("stage-event-audience.jpg", "Facing a full house", "Large audience event", "performance corporate"),
+    ("asian-paints-khandala.jpg", "Asian Paints", "Khandala", "corporate team"),
+    ("plant-hall-performance-4.jpg", "Audience in the round", "Performance in the plant hall", "performance industrial"),
+    ("office-floor-performance-1.jpg", "Office-floor performance", "Employees at their desks", "performance corporate"),
+    ("plant-floor-quality-campaign.jpg", "On the plant floor", "Quality & safety campaign", "industrial team"),
     ("john-cockerill.jpg", "John Cockerill", "Site visit & performance", "industrial"),
     ("hafele.jpg", "Häfele", "Corporate campaign", "corporate"),
     ("aditya-birla-seamex.jpg", "Aditya Birla Group | Seamex", "POSH awareness", "corporate"),
+    ("team-with-client-staff-2.jpg", "With the client's team", "Campaign day", "industrial team"),
     ("team-with-client-staff.jpg", "With the client's plant team", "Campaign day", "industrial team"),
     ("nsdl-1.jpg", "NSDL", "Corporate campaign", "corporate"),
     ("nsdl-2.jpg", "NSDL", "Corporate campaign", "corporate"),
@@ -105,7 +120,7 @@ SERVICES = [
         "title": "Behavioural Safety Plays",
         "nav": "Behavioural Safety",
         "icon": "hand",
-        "img": "team-with-client-staff.jpg",
+        "img": "plant-hall-performance-1.jpg",
         "short": "Stop-work authority, near-miss reporting, speaking up and looking out for co-workers.",
         "seo": "Behaviour-based safety theatre: stop-work authority, near-miss reporting and speaking-up culture plays for industrial and corporate teams.",
         "intro": [
@@ -160,7 +175,7 @@ SERVICES = [
         "title": "Brand Promotions & Corporate Theatre",
         "nav": "Brand Promotions & Corporate Theatre",
         "icon": "spark",
-        "img": "hafele.jpg",
+        "img": "stage-performance-1.jpg",
         "short": "Theatre-led brand activations, role plays, interactive shows and themed performances for events.",
         "seo": "Brand promotion street plays, BTL theatre activations, corporate role plays and interactive themed performances for employee engagement.",
         "intro": [
@@ -388,7 +403,8 @@ def gallery_block(p, photos, filters=False):
                     f'<figcaption>{E(cap)}<small>{E(sub)}</small></figcaption></figure>')
     filt = ""
     if filters:
-        opts = [("all", "All"), ("corporate", "Corporate offices"), ("industrial", "Plants & sites"), ("team", "Team")]
+        opts = [("all", "All"), ("performance", "Live performances"), ("corporate", "Corporate & events"),
+                ("industrial", "Plants & sites"), ("team", "Team")]
         filt = '<div class="filters" role="group" aria-label="Filter photos">' + "".join(
             f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{v}</button>' for k, v in opts) + "</div>"
     return f'{filt}<div class="gallery">{"".join(figs)}</div><div class="lightbox" role="dialog" aria-label="Photo viewer"><button type="button" aria-label="Close">×</button><div><img alt=""><p></p></div></div>'
@@ -439,7 +455,7 @@ def build_home():
     <div class="quote">A live play is watched, felt and remembered.</div>
     <a class="btn btn-maroon" href="{p}about.html">More about us</a>
   </div>
-  <div class="photo-stack reveal"><img src="{p}assets/img/hindustan-platinum.jpg" alt="Vichar Manch artists at Hindustan Platinum" loading="lazy">
+  <div class="photo-stack reveal"><img src="{p}assets/img/team-dhol.jpg" alt="The Vichar Manch team ready to perform" loading="lazy">
     <div class="badge"><b>150+</b>artists, Pan India</div></div>
 </div></section>"""
     body += f"""<section class="section alt"><div class="wrap">
@@ -506,7 +522,7 @@ def build_about():
     <p>A nukkad natak is different. The audience stands in a circle, close to the actors. They laugh, they recognise their colleagues and themselves in the characters, and they see the consequence of a bad decision play out in front of them. That emotional connection is what changes behaviour.</p>
     <ul class="checks"><li>Reaches every level — from senior managers to contract workers</li><li>Works in any language and any literacy level</li><li>Starts conversations that continue after the show</li></ul>
   </div>
-  <div class="photo-stack reveal"><img src="{p}assets/img/team-with-client-staff.jpg" alt="Vichar Manch artists with a client's plant team" loading="lazy"></div>
+  <div class="photo-stack reveal"><img src="{p}assets/img/plant-hall-performance-4.jpg" alt="Plant workers standing in a circle around a Vichar Manch performance" loading="lazy"></div>
 </div></section>"""
     body += f"""<section class="section"><div class="wrap">
   {section_head("Our strengths", "Why organisations choose Vichar Manch")}
@@ -607,8 +623,9 @@ def build_service(s):
 
 def build_clients():
     p = ""
-    site_photos = [ph for ph in PHOTOS if ph[0] in ("bpcl-mumbai-refinery.jpg", "hindustan-platinum.jpg", "john-cockerill.jpg",
-                                                     "hafele.jpg", "aditya-birla-seamex.jpg", "nsdl-2.jpg")]
+    site_files = ["asian-paints-stage.jpg", "bpcl-mumbai-refinery.jpg", "hindustan-platinum.jpg", "john-cockerill.jpg",
+                  "hafele-warehouse.jpg", "aditya-birla-seamex.jpg", "asian-paints-khandala.jpg", "hafele.jpg", "nsdl-2.jpg"]
+    site_photos = [next(ph for ph in PHOTOS if ph[0] == f) for f in site_files]
     body = hero(p, "hafele.jpg", "Clients", "Trusted by leading companies and public campaigns",
                 "We have performed for reputed brands, corporates and organisations across India — from refineries and engineering sites to corporate headquarters.",
                 contact_buttons(p), small=True)
