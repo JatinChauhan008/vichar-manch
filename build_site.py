@@ -25,7 +25,7 @@ PHONES = [  # (digits for links, display)
 WHATSAPP = "918169184646"  # number used by WhatsApp buttons & enquiry form
 YOUTUBE = "https://www.youtube.com/@Vicharmanchnukkadteam"
 GSTIN = "07NEQPS6179F1ZG"
-SITE_URL = "https://vichaarmanch.netlify.app"  # change if a custom domain is added
+SITE_URL = "https://vicharmanch04.netlify.app"  # change if a custom domain is added
 
 STATS = [("150+", "Trained artists"), ("150+", "Cities across India"),
          ("20–30 min", "Per performance"), ("Multilingual", "Hindi, English & local languages")]
