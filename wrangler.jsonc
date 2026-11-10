@@ -1,0 +1,10 @@
+// Cloudflare Workers static-site config for the Vichar Manch website.
+// Only the generated site/ folder is published; the PDFs, source photos and
+// build script in the repository root are never served.
+{
+  "name": "vichar-manch",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./site"
+  }
+}
