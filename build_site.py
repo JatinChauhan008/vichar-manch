@@ -36,14 +36,57 @@ CLIENTS = [
     ("John Cockerill", "Engineering"), ("Seamex", "Services"), ("Hindustan Platinum", "Precious metals"),
 ]
 
-VIDEOS = {
-    "ZhKOpwPU5Lg": ("Where Values Come Alive", "Hindustan Platinum · values & culture play"),
-    "gt7EYAoapiI": ("POSH Awareness Play", "Aditya Birla Group"),
-    "mkxtY8oDsKo": ("POSH Awareness Nukkad Natak", "Hindustan Platinum"),
-    "T2Czo59FmxE": ("Corporate Nukkad Natak – POSH", "John Cockerill"),
-    "7sW5ql3PZnI": ("Swachhta Abhiyan Nukkad Natak", "Cleanliness awareness"),
-    "qHWdW-m7j_0": ("Women Safety Awareness Play", "Rehearsal"),
-}
+# ---- YouTube videos: the ONE list to edit (#18) -------------------------------
+# To add a video, copy one entry and change it:
+#   url   - any YouTube link (youtu.be/..., youtube.com/watch?v=..., /shorts/...)
+#   title - shown under the thumbnail
+#   about - one short line on what the video is about / what it is for
+#   tag   - (optional) short label used where videos appear on other pages
+# The Videos page shows every entry, in this order (newest first).
+VIDEO_LIST = [
+    {"url": "https://youtu.be/ZhKOpwPU5Lg", "title": "Where Values Come Alive",
+     "about": "Company values like honesty, respect and teamwork brought to life for the Hindustan Platinum team.",
+     "tag": "Hindustan Platinum · values & culture play"},
+    {"url": "https://youtu.be/qHWdW-m7j_0", "title": "Women Safety Awareness Play",
+     "about": "A rehearsal of our women's safety play: why speaking up matters and how everyone can help.",
+     "tag": "Rehearsal"},
+    {"url": "https://youtu.be/gt7EYAoapiI", "title": "POSH Awareness Play",
+     "about": "POSH for Aditya Birla Group: recognising harassment, speaking up and building a respectful workplace.",
+     "tag": "Aditya Birla Group"},
+    {"url": "https://youtu.be/7sW5ql3PZnI", "title": "Swachhta Abhiyan Nukkad Natak",
+     "about": "A street play on cleanliness: right waste disposal, wet and dry segregation, clean neighbourhoods.",
+     "tag": "Cleanliness awareness"},
+    {"url": "https://youtu.be/ywnGltRBOvc", "title": "Cleanliness Awareness Campaign",
+     "about": "A public awareness campaign on cleanliness, performed as a nukkad natak.",
+     "tag": "Cleanliness awareness"},
+    {"url": "https://youtu.be/T2Czo59FmxE", "title": "Corporate Nukkad Natak – POSH",
+     "about": "A corporate POSH awareness performance for the John Cockerill team.",
+     "tag": "John Cockerill"},
+    {"url": "https://youtu.be/_SdzBek0SfM", "title": "Vichar Manch Short Film",
+     "about": "A short film featuring Vichar Manch artists, bringing a story to life through theatre and cinema.",
+     "tag": "Short film"},
+    {"url": "https://youtu.be/WOdQNi8D4rE", "title": "POSH Awareness Nukkad Natak",
+     "about": "POSH awareness for corporate professionals: workplace safety, boundaries and respectful behaviour.",
+     "tag": "Hindustan Platinum"},
+    {"url": "https://youtu.be/mkxtY8oDsKo", "title": "POSH Awareness Nukkad Natak",
+     "about": "A POSH awareness performance at Hindustan Platinum for corporate and white-collar teams.",
+     "tag": "Hindustan Platinum"},
+]
+
+
+def youtube_id(url):
+    """Extract the 11-character video id from any common YouTube URL."""
+    import re
+    m = re.search(r"(?:youtu\.be/|v=|/shorts/|/embed/|/live/)([A-Za-z0-9_-]{11})", url)
+    if not m:
+        raise ValueError(f"Not a YouTube video URL: {url}")
+    return m.group(1)
+
+
+# id -> (title, tag) lookup used by the smaller video sections on other pages
+VIDEOS = {youtube_id(v["url"]): (v["title"], v.get("tag", "")) for v in VIDEO_LIST}
+# videos shown in the Our Work page's video section (unchanged by #18)
+GALLERY_VIDEO_IDS = ["ZhKOpwPU5Lg", "gt7EYAoapiI", "mkxtY8oDsKo", "T2Czo59FmxE", "7sW5ql3PZnI", "qHWdW-m7j_0"]
 
 # (file, caption, sub-caption, filter categories)
 # The first 6 also appear on the home page (the first one large).
@@ -248,7 +291,7 @@ E = html.escape
 def nav_html(p, current):
     sub = "".join(f'<li><a href="{p}services/{s["slug"]}.html">{E(s["nav"])}</a></li>' for s in SERVICES)
     items = [("index.html", "Home"), ("about.html", "About"), ("services.html", "Services"),
-             ("clients.html", "Clients"), ("gallery.html", "Our Work"), ("contact.html", "Contact")]
+             ("clients.html", "Clients"), ("gallery.html", "Our Work"), ("videos.html", "Videos"), ("contact.html", "Contact")]
     lis = []
     for href, label in items:
         cur = ' aria-current="page"' if current == href else ""
@@ -319,7 +362,7 @@ def page(filename, title, description, body, current=None, depth=0, og_image="bp
       <div><h4>Services</h4><ul>{svc_footer}</ul></div>
       <div><h4>Explore</h4><ul>
         <li><a href="{p}about.html">About us</a></li><li><a href="{p}clients.html">Clients</a></li>
-        <li><a href="{p}gallery.html">Photos & videos</a></li><li><a href="{p}contact.html">Contact</a></li></ul></div>
+        <li><a href="{p}gallery.html">Photos & videos</a></li><li><a href="{p}videos.html">Videos</a></li><li><a href="{p}contact.html">Contact</a></li></ul></div>
       <div><h4>Get in touch</h4><ul>{phones_footer}
         <li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Delhi · Mumbai · Pan India</li></ul></div>
     </div>
@@ -452,7 +495,8 @@ def gallery_block(p, photos, filters=False, captions=True):
                 ("industrial", "Plants & sites"), ("team", "Team")]
         filt = '<div class="filters" role="group" aria-label="Filter photos">' + "".join(
             f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k == "all" else "false"}">{v}</button>' for k, v in opts) + "</div>"
-    return f'{filt}<div class="gallery">{"".join(figs)}</div><div class="lightbox" role="dialog" aria-label="Photo viewer"><button type="button" aria-label="Close">×</button><div><img alt=""><p></p></div></div>'
+    # the photo viewer itself is created by main.js (one per page)
+    return f'{filt}<div class="gallery">{"".join(figs)}</div>'
 
 
 FEATURED_PROJECT = {
@@ -485,6 +529,21 @@ def videos_block(ids):
                    f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></button></div>'
                    f'<h3>{E(t)}</h3><p>{E(sub)}</p></div>')
     return f'<div class="videos">{"".join(out)}</div>'
+
+
+def video_gallery():
+    """Dedicated Videos gallery (#18): clean thumbnail cards, title and one-line
+    'about' text below, click to play. Built from VIDEO_LIST."""
+    cards = []
+    for v in VIDEO_LIST:
+        vid = youtube_id(v["url"])
+        cards.append(
+            f'<article class="vcard reveal"><div class="video-frame">'
+            f'<button type="button" data-id="{vid}" aria-label="Play video: {E(v["title"])}">'
+            f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">'
+            f'<span class="play" aria-hidden="true"></span></button></div>'
+            f'<div class="vcard-body"><h3>{E(v["title"])}</h3><p>{E(v["about"])}</p></div></article>')
+    return f'<div class="vgallery">{"".join(cards)}</div>'
 
 
 def steps_block():
@@ -734,13 +793,29 @@ def build_gallery():
 </div></section>"""
     body += f"""<section class="section dark"><div class="wrap">
   {section_head("Videos", "Watch our performances")}
-  {videos_block(list(VIDEOS.keys()))}
+  {videos_block(GALLERY_VIDEO_IDS)}
   <p style="margin-top:26px"><a class="btn btn-gold" href="{YOUTUBE}" target="_blank" rel="noopener">{icon("play")}Subscribe on YouTube</a></p>
 </div></section>"""
     body += cta_block(p)
     return page("gallery.html", "Our Work – Photos & Videos",
                 "Photos and videos of Vichar Manch nukkad natak performances for BPCL, Hindustan Platinum, John Cockerill, Häfele, Aditya Birla Group, NSDL and public awareness campaigns.",
                 body, current="gallery.html", og_image="nsdl-1.jpg")
+
+
+def build_videos():
+    p = ""
+    body = hero(p, "stage-performance-1.jpg", "Videos", "Watch our performances",
+                "Nukkad natak and corporate theatre on POSH, workplace values, women's safety, cleanliness and more.",
+                contact_buttons(p), small=True)
+    body += f"""<section class="section" id="videos"><div class="wrap">
+  {section_head("Video gallery", "Videos", "Click any video to play it.")}
+  {video_gallery()}
+  <p style="margin-top:30px"><a class="btn btn-maroon" href="{YOUTUBE}" target="_blank" rel="noopener">{icon("play")}More on our YouTube channel</a></p>
+</div></section>"""
+    body += cta_block(p)
+    return page("videos.html", "Videos",
+                "Watch Vichar Manch nukkad natak videos: POSH awareness plays for Aditya Birla Group, Hindustan Platinum and John Cockerill, women safety, cleanliness and more.",
+                body, current="videos.html", og_image="stage-performance-1.jpg")
 
 
 def build_contact():
@@ -805,9 +880,10 @@ def main():
         write(f"services/{s['slug']}.html", build_service(s))
     write("clients.html", build_clients())
     write("gallery.html", build_gallery())
+    write("videos.html", build_videos())
     write("contact.html", build_contact())
     if SITE_URL:
-        pages = ["index.html", "about.html", "services.html", "clients.html", "gallery.html", "contact.html"] + \
+        pages = ["index.html", "about.html", "services.html", "clients.html", "gallery.html", "videos.html", "contact.html"] + \
                 [f"services/{s['slug']}.html" for s in SERVICES]
         urls = "".join(f"<url><loc>{SITE_URL}/{'' if pg == 'index.html' else pg}</loc></url>" for pg in pages)
         write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
