@@ -30,6 +30,7 @@ python -m http.server 8765 --directory site
 
 All links in `site/` are relative, so the site works at the project URL
 (`https://jatinchauhan008.github.io/vichar-manch/`) or on a custom domain.
+Custom domain: **vicharmanchnukkadnatak.in** (set in Settings → Pages).
 
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 After that, each push to `main` that changes `site/` publishes automatically

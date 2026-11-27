@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://vicharmanchnukkadnatak.netlify.app/sitemap.xml
+Sitemap: https://vicharmanchnukkadnatak.in/sitemap.xml
